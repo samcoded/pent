@@ -12,7 +12,7 @@ app.use(cors());
 // routes
 app.use("/api", routes);
 
-app.use((req, res, next) => {
+app.use((req, res) => {
     return res
         .status(404)
         .json({ success: false, message: "ERROR: Wrong API ROUTE", data: {} });
