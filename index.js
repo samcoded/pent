@@ -2,16 +2,32 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
-const routes = require("./routes/index");
+
 require("dotenv").config();
 
 // middleware
+app.use(
+    express.urlencoded({
+        extended: true,
+    })
+);
 app.use(express.json());
 app.use(cors());
 
 // routes
+const routes = require("./routes/index");
+
 app.use("/api", routes);
 
+app.get("/", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Welcome to PENT, Go to /api to see the API",
+        data: {},
+    });
+});
+
+// catch 404 and forward to error handler
 app.use((req, res) => {
     return res
         .status(404)
