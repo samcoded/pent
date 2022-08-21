@@ -1,5 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const os = require("os");
+const upload = multer({ dest: os.tmpdir() });
+const formMiddleware = upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+]);
+
+const { verifyToken } = require("../middlewares/verify");
 
 const {
     login,
@@ -9,14 +18,6 @@ const {
     deleteUser,
     getAllUsers,
 } = require("../controllers/user");
-
-const {
-    createApartment,
-    getAllApartments,
-    getApartment,
-    updateApartment,
-    deleteApartment,
-} = require("../controllers/apartment");
 
 const {
     createReview,
@@ -40,23 +41,17 @@ router.get("/", (req, res) => {
 router.post("/login", login);
 router.post("/register", register);
 router.get("/user/:id", getUser);
-router.put("/user/:id", updateUser);
+router.put("/user/:id", verifyToken, updateUser);
 router.delete("/user/:id", deleteUser);
 router.get("/users", getAllUsers);
 
-// Apartment routes
-router.post("/apartment", createApartment);
-router.get("/apartments", getAllApartments);
-router.get("/apartment/:id", getApartment);
-router.put("/apartment/:id", updateApartment);
-router.delete("/apartment/:id", deleteApartment);
-
 // Review routes
-router.post("/review", createReview);
-router.get("/reviews/:apartmentId", getAllReviews);
+
+router.post("/review", verifyToken, formMiddleware, createReview);
+router.get("/reviews", getAllReviews);
 router.get("/review/:id", getReview);
-router.put("/review/:id", updateReview);
-router.delete("/review/:id", deleteReview);
-router.put("/review/:id/helpful", markHelpful);
+router.put("/review/:id", verifyToken, formMiddleware, updateReview);
+router.delete("/review/:id", verifyToken, deleteReview);
+router.put("/review/:id/helpful", verifyToken, markHelpful);
 
 module.exports = router;
