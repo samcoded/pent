@@ -7,8 +7,11 @@ Pent is a hypothetical platform where users can sign up with their basic informa
 ## TOOLS
 
 NODEJS - Server framework
+
 EXPRESS - Web framework
+
 MONGODB (MONGOOSE) - Database framework
+
 AWS S3 BUCKET - Storage engine
 
 ## INSTALL

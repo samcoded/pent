@@ -85,7 +85,6 @@ const createReview = async (req, res) => {
 
         payload.user = user._id;
         payload.apartment = apartment._id;
-        // console.log(payload);
         const review = await ReviewModel.create(payload);
         res.json({
             success: true,
@@ -93,7 +92,6 @@ const createReview = async (req, res) => {
             data: review,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -122,7 +120,6 @@ const getAllReviews = async (req, res) => {
             data: reviews,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",

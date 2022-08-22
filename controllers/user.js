@@ -54,7 +54,6 @@ const login = async (req, res) => {
             data: data,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -65,7 +64,6 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     const { name, email, password } = req.body;
-    // console.log(req.body);
     try {
         // joi validation
         const schema = joi.object().keys({
@@ -108,7 +106,6 @@ const register = async (req, res) => {
             data: data,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -135,7 +132,6 @@ const getUser = async (req, res) => {
             data: user,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -195,7 +191,6 @@ const updateUser = async (req, res) => {
             data: data,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -230,7 +225,6 @@ const deleteUser = async (req, res) => {
             data: {},
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -247,7 +241,6 @@ const getAllUsers = async (req, res) => {
             data: users,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -310,7 +303,6 @@ const changePassword = async (req, res) => {
             data: {},
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",

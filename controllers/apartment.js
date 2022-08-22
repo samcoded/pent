@@ -56,7 +56,6 @@ const createApartment = async (req, res) => {
             data: apartment,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -78,7 +77,6 @@ const getAllApartments = async (req, res) => {
             data: apartments,
         });
     } catch (err) {
-        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
