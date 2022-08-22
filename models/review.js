@@ -3,11 +3,15 @@ const Schema = mongoose.Schema;
 
 const reviewSchema = new Schema(
     {
-        title: {
+        landlord: {
             type: String,
             required: true,
         },
-        description: {
+        environment: {
+            type: String,
+            required: true,
+        },
+        quality_of_amenities: {
             type: String,
             required: true,
         },
@@ -18,7 +22,7 @@ const reviewSchema = new Schema(
         video: {
             type: String,
         },
-        images: {
+        image: {
             type: String,
         },
         helpful: {
@@ -31,8 +35,11 @@ const reviewSchema = new Schema(
             required: true,
         },
         apartment: {
-            type: Schema.Types.ObjectId,
-            ref: "Apartment",
+            type: String,
+            required: true,
+        },
+        location: {
+            type: String,
             required: true,
         },
     },
