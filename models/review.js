@@ -18,6 +18,8 @@ const reviewSchema = new Schema(
         rating: {
             type: Number,
             required: true,
+            min: [1, "Ratings must be between 1 and 10"],
+            max: [10, "Ratings must be between 1 and 10"],
         },
         video: {
             type: String,
