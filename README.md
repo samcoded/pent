@@ -32,4 +32,4 @@ or
 https://documenter.getpostman.com/view/14158032/VUqpvJfz (API DOCUMENTATION ON POSTMAN)
 
 ## LIVE DEMO
-https://pent-api-code.herokuapp.com/ (deployed to Heroku)
+https://pent-api-code.herokuapp.com/api (deployed to Heroku)
