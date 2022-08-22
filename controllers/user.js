@@ -207,6 +207,14 @@ const deleteUser = async (req, res) => {
     const id = req.params.id;
 
     try {
+        if (req.user._id.equals(id)) {
+            return res.status(403).json({
+                success: false,
+                message: "can't delete yourself",
+                data: {},
+            });
+        }
+
         const user = await UserModel.findById(id);
         if (!user) {
             return res.status(400).json({

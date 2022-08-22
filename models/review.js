@@ -37,11 +37,8 @@ const reviewSchema = new Schema(
             required: true,
         },
         apartment: {
-            type: String,
-            required: true,
-        },
-        location: {
-            type: String,
+            type: Schema.Types.ObjectId,
+            ref: "Apartment",
             required: true,
         },
     },

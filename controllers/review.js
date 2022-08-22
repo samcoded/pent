@@ -5,19 +5,22 @@ const ReviewModel = require("../models/review");
 
 const createReview = async (req, res) => {
     const user = req.user;
-    const {
-        apartment,
-        location,
-        rating,
-        landlord,
-        environment,
-        quality_of_amenities,
-    } = req.body;
+    const apartmentId = req.params.apartmentId;
+
+    const { rating, landlord, environment, quality_of_amenities } = req.body;
 
     try {
+        // check if apartment exists
+        const apartment = await ApartmentModel.findById(apartmentId);
+        if (!apartment) {
+            return res.status(404).json({
+                success: false,
+                message: "Apartment not found",
+                data: {},
+            });
+        }
+
         const payload = {
-            apartment,
-            location,
             rating,
             landlord,
             environment,
@@ -26,8 +29,6 @@ const createReview = async (req, res) => {
 
         // joi validation
         const schema = Joi.object({
-            apartment: Joi.string().required(),
-            location: Joi.string().required(),
             rating: Joi.number().min(1).max(10).required(),
             landlord: Joi.string().required(),
             environment: Joi.string().required(),
@@ -81,6 +82,7 @@ const createReview = async (req, res) => {
         }
 
         payload.user = user._id;
+        payload.apartment = apartment._id;
         const review = await ReviewModel.create(payload);
         res.json({
             success: true,
@@ -123,6 +125,38 @@ const getAllReviews = async (req, res) => {
         });
     }
 };
+
+const getAllReviewsByApartment = async (req, res) => {
+    const apartmentId = req.params.apartmentId;
+
+    try {
+        let reviews;
+        // sort by number of helpful array
+        if (req.query.sort === "helpful") {
+            reviews = await ReviewModel.find({ apartment: apartmentId }).sort({
+                helpful: -1,
+            });
+        } else {
+            //sort by newest review
+            reviews = await ReviewModel.find({ apartment: apartmentId }).sort({
+                createdAt: -1,
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Reviews retrieved for apartment",
+            data: reviews,
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            data: {},
+        });
+    }
+};
+
 const getReview = async (req, res) => {
     const id = req.params.id;
 
