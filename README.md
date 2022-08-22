@@ -27,3 +27,6 @@ or
 ` npm start`
 or
 ` yarn start`
+
+## API DOCUMENTATION
+https://documenter.getpostman.com/view/14158032/VUqpvJfz (API DOCUMENTATION ON POSTMAN)
