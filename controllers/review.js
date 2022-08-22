@@ -355,6 +355,7 @@ const markHelpful = async (req, res) => {
 
 module.exports = {
     createReview,
+    getAllReviewsByApartment,
     getAllReviews,
     getReview,
     updateReview,

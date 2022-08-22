@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const os = require("os");
 
-const upload = multer({ dest: os.tmpdir() });
-const formMiddleware = upload.fields([
+// for parsing form data fields containing video and image
+const upload = require("../middlewares/multer");
+// const uploadVideo = upload.fields([{ name: "video", maxCount: 1 }]);
+const uploadImage = upload.fields([{ name: "image", maxCount: 1 }]);
+const uploadBoth = upload.fields([
     { name: "image", maxCount: 1 },
     { name: "video", maxCount: 1 },
-]); // for parsing form data fields containing video and image
+]);
 
 const { verifyToken } = require("../middlewares/verify"); // for verifying token
 
@@ -56,23 +57,29 @@ router.put("/user/:id", verifyToken, updateUser);
 router.delete("/user/:id", verifyToken, deleteUser);
 
 // Apartment routes
-router.post("/apartment", verifyToken, createApartment);
+router.post("/apartment", verifyToken, uploadImage, createApartment);
 router.get("/apartment", verifyToken, getAllApartments);
 router.get("/apartment/:id", verifyToken, getApartment);
 router.put("/apartment/:id", verifyToken, updateApartment);
 router.delete("/apartment/:id", verifyToken, deleteApartment);
 
 // Review routes
+router.get(
+    "apartment/:apartmentId/review/",
+    verifyToken,
+    getAllReviewsByApartment
+);
+
 router.post(
     "apartment/:apartmentId/review/",
     verifyToken,
-    formMiddleware,
+    uploadBoth,
     createReview
 );
-router.get("apartment/:apartmentId/review/", getAllReviewsByApartment);
-router.get("/review", getAllReviews);
-router.get("/review/:id", getReview);
-router.put("/review/:id", verifyToken, formMiddleware, updateReview);
+
+router.get("/review", verifyToken, getAllReviews);
+router.get("/review/:id", verifyToken, getReview);
+router.put("/review/:id", verifyToken, uploadBoth, updateReview);
 router.delete("/review/:id", verifyToken, deleteReview);
 router.put("/review/:id/helpful", verifyToken, markHelpful);
 
