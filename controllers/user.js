@@ -293,7 +293,7 @@ const changePassword = async (req, res) => {
                 data: {},
             });
         }
-        const isMatch = user.isValidPassword(oldPassword);
+        const isMatch = await user.isValidPassword(oldPassword);
         if (!isMatch) {
             return res.status(400).json({
                 success: false,
@@ -301,6 +301,7 @@ const changePassword = async (req, res) => {
                 data: {},
             });
         }
+
         user.password = newPassword;
         await user.save();
         res.json({

@@ -54,15 +54,15 @@ router.post("/login", login);
 router.post("/register", register);
 router.get("/user", verifyToken, getAllUsers);
 router.get("/user/:id", verifyToken, getUser);
-router.put("/user/:id", verifyToken, updateUser);
+router.patch("/user/:id", verifyToken, updateUser);
 router.delete("/user/:id", verifyToken, deleteUser);
-router.put("/user/:id/password", verifyToken, changePassword);
+router.patch("/user/:id/password", verifyToken, changePassword);
 
 // Apartment routes
 router.post("/apartment", verifyToken, uploadImage, createApartment);
 router.get("/apartment", verifyToken, getAllApartments);
 router.get("/apartment/:id", verifyToken, getApartment);
-router.put("/apartment/:id", verifyToken, updateApartment);
+router.patch("/apartment/:id", verifyToken, uploadImage, updateApartment);
 router.delete("/apartment/:id", verifyToken, deleteApartment);
 
 // Review routes
@@ -81,8 +81,8 @@ router.post(
 
 router.get("/review", verifyToken, getAllReviews);
 router.get("/review/:id", verifyToken, getReview);
-router.put("/review/:id", verifyToken, uploadBoth, updateReview);
+router.patch("/review/:id", verifyToken, uploadBoth, updateReview);
 router.delete("/review/:id", verifyToken, deleteReview);
-router.put("/review/:id/helpful", verifyToken, markHelpful);
+router.patch("/review/:id/helpful", verifyToken, markHelpful);
 
 module.exports = router;

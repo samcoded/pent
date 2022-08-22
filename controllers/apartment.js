@@ -107,7 +107,6 @@ const getApartment = async (req, res) => {
 const updateApartment = async (req, res) => {
     const id = req.params.id;
     const user = req.user;
-
     const { name, location } = req.body;
 
     try {
@@ -129,8 +128,6 @@ const updateApartment = async (req, res) => {
             });
         }
 
-        const payload = { name, location };
-
         // joi validation
         const schema = Joi.object({
             name: Joi.string(),
@@ -138,7 +135,7 @@ const updateApartment = async (req, res) => {
         });
 
         try {
-            await schema.validateAsync(payload);
+            await schema.validateAsync({ name, location });
         } catch (error) {
             return res.status(400).json({
                 success: false,
@@ -162,21 +159,21 @@ const updateApartment = async (req, res) => {
                     Body: blob,
                 };
                 const s3Upload = await s3.upload(params).promise();
-                payload.image = s3Upload.Location;
+                apartment.image = s3Upload.Location;
             }
         }
 
-        const updatedApartment = await ApartmentModel.findByIdAndUpdate(
-            id,
-            payload,
-            {
-                new: true,
-            }
-        );
+        if (name) {
+            apartment.name = name;
+        }
+        if (location) {
+            apartment.location = location;
+        }
+        await apartment.save();
         res.json({
             success: true,
             message: "Apartment updated",
-            data: updatedApartment,
+            data: apartment,
         });
     } catch (err) {
         res.status(500).json({
@@ -190,11 +187,11 @@ const deleteApartment = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const apartment = await ApartmentModel.findByIdAndDelete(id);
+        await ApartmentModel.findByIdAndDelete(id);
         res.json({
             success: true,
             message: "Apartment deleted",
-            data: apartment,
+            data: {},
         });
     } catch (err) {
         res.status(500).json({

@@ -109,9 +109,11 @@ const getAllReviews = async (req, res) => {
         // sort by number of helpful array
         if (req.query.sort === "helpful") {
             reviews = await ReviewModel.find().sort({ helpful: -1 });
-        } else {
+        } else if (req.query.sort === "recent") {
             //sort by newest review
             reviews = await ReviewModel.find().sort({ createdAt: -1 });
+        } else {
+            reviews = await ReviewModel.find();
         }
 
         res.status(200).json({
