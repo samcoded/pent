@@ -65,13 +65,13 @@ router.delete("/apartment/:id", verifyToken, deleteApartment);
 
 // Review routes
 router.get(
-    "apartment/:apartmentId/review/",
+    "/apartment/:apartmentId/review",
     verifyToken,
     getAllReviewsByApartment
 );
 
 router.post(
-    "apartment/:apartmentId/review/",
+    "/apartment/:apartmentId/review",
     verifyToken,
     uploadBoth,
     createReview

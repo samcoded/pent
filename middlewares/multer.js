@@ -20,8 +20,6 @@ const upload = multer({
         fileSize: 1024 * 1024 * 50, // 50 MB
     },
     fileFilter: (req, file, cb) => {
-        // console.log(req);
-        console.log(file);
         if (file.fieldname === "image") {
             if (
                 file.mimetype == "image/png" ||

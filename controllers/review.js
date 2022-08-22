@@ -2,6 +2,7 @@ const AWS = require("aws-sdk");
 const fs = require("fs");
 const Joi = require("joi");
 const ReviewModel = require("../models/review");
+const ApartmentModel = require("../models/apartment");
 
 const createReview = async (req, res) => {
     const user = req.user;
@@ -44,6 +45,7 @@ const createReview = async (req, res) => {
                 data: {},
             });
         }
+
         if (req.files) {
             if (req.files.video) {
                 video = req.files.video[0];
@@ -83,6 +85,7 @@ const createReview = async (req, res) => {
 
         payload.user = user._id;
         payload.apartment = apartment._id;
+        // console.log(payload);
         const review = await ReviewModel.create(payload);
         res.json({
             success: true,
