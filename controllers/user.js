@@ -256,6 +256,68 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const changePassword = async (req, res) => {
+    const id = req.params.id;
+    const { oldPassword, newPassword } = req.body;
+
+    try {
+        if (!req.user._id.equals(id)) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized",
+                data: {},
+            });
+        }
+
+        // joi validation
+        const schema = joi.object().keys({
+            oldPassword: joi.string().required(),
+            newPassword: joi.string().required(),
+        });
+
+        try {
+            await schema.validateAsync({ oldPassword, newPassword });
+        } catch (error) {
+            return res.status(400).json({
+                success: false,
+                message: error.details[0].message,
+                data: {},
+            });
+        }
+
+        const user = await UserModel.findById(id);
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found",
+                data: {},
+            });
+        }
+        const isMatch = user.isValidPassword(oldPassword);
+        if (!isMatch) {
+            return res.status(400).json({
+                success: false,
+                message: "Incorrect password",
+                data: {},
+            });
+        }
+        user.password = newPassword;
+        await user.save();
+        res.json({
+            success: true,
+            message: "Password changed",
+            data: {},
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: "Server error",
+            data: {},
+        });
+    }
+};
+
 // export all
 module.exports = {
     login,
@@ -264,4 +326,5 @@ module.exports = {
     updateUser,
     deleteUser,
     getAllUsers,
+    changePassword,
 };

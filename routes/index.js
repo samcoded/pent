@@ -19,6 +19,7 @@ const {
     updateUser,
     deleteUser,
     getAllUsers,
+    changePassword,
 } = require("../controllers/user");
 
 const {
@@ -55,6 +56,7 @@ router.get("/user", verifyToken, getAllUsers);
 router.get("/user/:id", verifyToken, getUser);
 router.put("/user/:id", verifyToken, updateUser);
 router.delete("/user/:id", verifyToken, deleteUser);
+router.put("/user/:id/password", verifyToken, changePassword);
 
 // Apartment routes
 router.post("/apartment", verifyToken, uploadImage, createApartment);
