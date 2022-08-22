@@ -28,7 +28,7 @@ const createReview = async (req, res) => {
         const schema = Joi.object({
             apartment: Joi.string().required(),
             location: Joi.string().required(),
-            rating: Joi.number().required(),
+            rating: Joi.number().min(1).max(10).required(),
             landlord: Joi.string().required(),
             environment: Joi.string().required(),
             quality_of_amenities: Joi.string().required(),
@@ -99,13 +99,23 @@ const createReview = async (req, res) => {
 
 const getAllReviews = async (req, res) => {
     try {
-        const reviews = await ReviewModel.find();
-        res.json({
+        let reviews;
+
+        // sort by number of helpful array
+        if (req.query.sort === "helpful") {
+            reviews = await ReviewModel.find().sort({ helpful: -1 });
+        } else {
+            //sort by newest review
+            reviews = await ReviewModel.find().sort({ createdAt: -1 });
+        }
+
+        res.status(200).json({
             success: true,
             message: "Reviews retrieved",
             data: reviews,
         });
     } catch (err) {
+        console.log(err);
         res.status(500).json({
             success: false,
             message: "Server error",
@@ -276,15 +286,26 @@ const markHelpful = async (req, res) => {
         }
         const userId = user._id;
         if (review.helpful.includes(userId)) {
-            return res.status(400).json({
-                success: false,
-                message: "You have already marked this review helpful",
-                data: {},
+            // REMOVE
+
+            const index = review.helpful.indexOf(userId);
+            review.helpful.splice(index, 1);
+            await review.save();
+            return res.status(200).json({
+                success: true,
+                message: "Review helpful removed",
+                data: review,
             });
+
+            // return res.status(400).json({
+            //     success: false,
+            //     message: "You have already marked this review helpful",
+            //     data: {},
+            // });
         }
         review.helpful.push(userId);
         await review.save();
-        res.json({
+        res.status(200).json({
             success: true,
             message: "Review marked helpful",
             data: review,
