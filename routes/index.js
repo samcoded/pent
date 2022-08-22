@@ -10,7 +10,7 @@ const uploadBoth = upload.fields([
     { name: "video", maxCount: 1 },
 ]);
 
-const { verifyToken } = require("../middlewares/verify"); // for verifying token
+const { verifyToken } = require("../middlewares/verify"); // for verifying token and getting logged in user details
 
 const {
     login,
