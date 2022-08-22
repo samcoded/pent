@@ -19,19 +19,6 @@ const routes = require("./routes/index");
 
 app.use("/api", routes);
 
-const upload = require("./middlewares/multer"); // for parsing form data fields containing video and image
-
-app.post(
-    "/upload",
-    upload.fields([
-        { name: "image", maxCount: 1 },
-        { name: "video", maxCount: 1 },
-    ]),
-    (req, res) => {
-        res.send(req.files);
-    }
-);
-
 app.get("/", (req, res) => {
     res.status(200).json({
         success: true,
